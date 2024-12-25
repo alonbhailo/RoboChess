@@ -10,10 +10,14 @@ import cv2
 # 1. crops the board from the image by corner detection
 # 2. crops the board to pieces.
 def preprocess(numpy_frame):
-    _, cropped_board = detect_input_board(numpy_frame)
+    try:
+        _, cropped_board = detect_input_board(numpy_frame)
+    except:
+        print("No board detected")
+        return False, None, None
     pieces, corners = obtain_individual_pieces(cropped_board["orig"])
     pieces = np.concatenate(pieces, axis=0)
-    return cropped_board["orig"], pieces
+    return True, cropped_board["orig"], pieces
 
 def main():
     img_path = "LiveChess2Fen/data/predictions/TestImages/FullDetection/test1.jpg"

@@ -77,18 +77,15 @@ def __original_points_coords(point_list):
 
 def __layer(img):
     """Execute one layer (iteration) on the given image."""
-    try:
-        # Step 1 --- Straight line detector
-        lines = slid(img["main"])
+    # Step 1 --- Straight line detector
+    lines = slid(img["main"])
 
-        # Step 2 --- Lattice points search
-        points = laps(img["main"], lines)
+    # Step 2 --- Lattice points search
+    points = laps(img["main"], lines)
 
-        # Step 3 --- Chessboard position search
-        four_points = cps(img["main"], points, lines)
-        img.crop(four_points)
-    except:
-        print("No board was detected")
+    # Step 3 --- Chessboard position search
+    four_points = cps(img["main"], points, lines)
+    img.crop(four_points)
 
     # Crop the image for the next step
 

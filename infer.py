@@ -55,7 +55,7 @@ def main():
             # Check if the frame was successfully captured
             if ret:
                 # Display the captured frame (image) continuously
-                cv2.imshow("Captured Image", frame)
+                cv2.imshow("Captured Image", cv2.resize(frame, (720, 640)))
 
                 # Wait for keypress
                 key = cv2.waitKey(1) & 0xFF
@@ -65,12 +65,14 @@ def main():
                 elif key == ord(' '):  # If spacebar is pressed, process the frame
                     print("Processing Board")
                     # Perform the preprocessing and inference only when spacebar is pressed
-                    cropped_board, pieces64 = preprocess(frame)
+                    detected, cropped_board, pieces64 = preprocess(frame)
+                    if not detected:
+                        continue
                     #pieces64 /= 255
                     #pieces64 -= 1
                     board_result = robochess.infer(pieces64)  # 64 on 13
                     # Display the cropped board
-                    cv2.imshow("Cropped Board", cropped_board)
+                    cv2.imshow("Cropped Board", cv2.resize(cropped_board, (720, 640)))
 
             else:
                 print("Error: Could not read frame.")
