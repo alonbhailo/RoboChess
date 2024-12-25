@@ -75,7 +75,7 @@ def split_board_image_trivial(
                     row_start : row_start + square_size,
                     col_start : col_start + square_size,
                 ]
-            
+            b = cv2.resize(b, (299,299))
             cv2.imwrite(out_loc, b)
             splited_imgs.append(b[None, :, :])
             corners.append([row_start, row_start + square_size, col_start, col_start + square_size])

@@ -1,6 +1,6 @@
 import multiprocessing
 import sys
-sys.path.append("/home/zahi/new/RoboChess/LiveChess2Fen")
+sys.path.append("LiveChess2Fen")
 
 from lc2fen.predict_board import detect_input_board, obtain_individual_pieces
 import setproctitle
