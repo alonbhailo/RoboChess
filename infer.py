@@ -14,7 +14,6 @@ class RoboChess:
         self._xception_infer_vstreams = self._create_xception_infer_vstream(target)
 
     def _create_xception_infer_vstream(self, target):
-        import ipdb; ipdb.set_trace()
         hef = HEF(HEF_XCEPTION_PATH)
         configure_params = ConfigureParams.create_from_hef(hef, interface=HailoStreamInterface.PCIe)
         configure_params['Xception_last'].batch_size = 64
