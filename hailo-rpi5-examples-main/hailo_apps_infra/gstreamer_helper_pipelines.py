@@ -98,8 +98,8 @@ def INFERENCE_PIPELINE(
     hef_path,
     post_process_so=None,
     batch_size=1,
-    config_json=None,
     post_function_name=None,
+    config_json=None,
     additional_params='',
     name='inference',
     # Extra hailonet parameters

@@ -64,16 +64,10 @@ class GStreamerDetectionApp(GStreamerApp):
             self.arch = args.arch
 
 
-        if args.hef_path is not None:
-            self.hef_path = args.hef_path
         # Set the HEF file path based on the arch
-        elif self.arch == "hailo8":
-            self.hef_path = os.path.join(self.current_path, '../resources/yolov8m.hef')
-        else:  # hailo8l
-            self.hef_path = os.path.join(self.current_path, '../resources/yolov8s_h8l.hef')
-
+        self.hef_path = "/home/zahi/new/RoboChess/model.hef"
         # Set the post-processing shared object file
-        self.post_process_so = os.path.join(self.current_path, '../resources/libyolo_hailortpp_postprocess.so')
+        self.post_process_so = None # os.path.join(self.current_path, '../resources/libyolo_hailortpp_postprocess.so')
         self.post_function_name = "filter_letterbox"
         # User-defined label JSON file
         self.labels_json = args.labels_json

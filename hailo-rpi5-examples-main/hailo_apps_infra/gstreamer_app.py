@@ -12,14 +12,16 @@ import sys
 import cv2
 import numpy as np
 import time
-gi.require_version('Gst', '1.0')
+
+gi.require_version("Gst", "1.0")
 from gi.repository import Gst, GLib, GObject
 from gstreamer_helper_pipelines import get_source_type
 
 try:
     from picamera2 import Picamera2
 except ImportError:
-    pass # Available only on Pi OS
+    pass  # Available only on Pi OS
+
 
 # -----------------------------------------------------------------------------------------------
 # User-defined class to be used in the callback function
@@ -52,7 +54,6 @@ class app_callback_class:
             return self.frame_queue.get()
         else:
             return None
-        
     def set_edited_frame(self, frame):
         if not self.edited_frame_queue.full():
             self.edited_frame_queue.put(frame)
@@ -92,9 +93,11 @@ class GStreamerApp:
         signal.signal(signal.SIGINT, self.shutdown)
 
         # Initialize variables
-        tappas_post_process_dir = os.environ.get('TAPPAS_POST_PROC_DIR', '')
-        if tappas_post_process_dir == '':
-            print("TAPPAS_POST_PROC_DIR environment variable is not set. Please set it to by sourcing setup_env.sh")
+        tappas_post_process_dir = os.environ.get("TAPPAS_POST_PROC_DIR", "")
+        if tappas_post_process_dir == "":
+            print(
+                "TAPPAS_POST_PROC_DIR environment variable is not set. Please set it to by sourcing setup_env.sh"
+            )
             exit(1)
         self.current_path = os.path.dirname(os.path.abspath(__file__))
         self.postprocess_dir = tappas_post_process_dir
@@ -117,7 +120,11 @@ class GStreamerApp:
         # Set user data parameters
         user_data.use_frame = self.options_menu.use_frame
 
-        self.sync = "false" if (self.options_menu.disable_sync or self.source_type != "file") else "true"
+        self.sync = (
+            "false"
+            if (self.options_menu.disable_sync or self.source_type != "file")
+            else "true"
+        )
         self.show_fps = "true" if self.options_menu.show_fps else "false"
 
         if self.options_menu.dump_dot:
@@ -143,7 +150,9 @@ class GStreamerApp:
         # Connect to hailo_display fps-measurements
         if self.show_fps:
             print("Showing FPS")
-            self.pipeline.get_by_name("hailo_display").connect("fps-measurements", self.on_fps_measurement)
+            self.pipeline.get_by_name("hailo_display").connect(
+                "fps-measurements", self.on_fps_measurement
+            )
 
         # Create a GLib Main Loop
         self.loop = GLib.MainLoop()
@@ -164,10 +173,9 @@ class GStreamerApp:
             print(f"QoS message received from {qos_element}")
         return True
 
-
     def on_eos(self):
         if self.source_type == "file":
-             # Seek to the start (position 0) in nanoseconds
+            # Seek to the start (position 0) in nanoseconds
             success = self.pipeline.seek_simple(Gst.Format.TIME, Gst.SeekFlags.FLUSH, 0)
             if success:
                 print("Video rewound successfully. Restarting playback...")
@@ -175,7 +183,6 @@ class GStreamerApp:
                 print("Error rewinding the video.")
         else:
             self.shutdown()
-
 
     def shutdown(self, signum=None, frame=None):
         print("Shutting down... Hit Ctrl-C again to force quit.")
@@ -188,7 +195,6 @@ class GStreamerApp:
 
         self.pipeline.set_state(Gst.State.NULL)
         GLib.idle_add(self.loop.quit)
-
 
     def get_pipeline_string(self):
         # This is a placeholder function that should be overridden by the child class
@@ -208,14 +214,20 @@ class GStreamerApp:
         # Connect pad probe to the identity element
         identity = self.pipeline.get_by_name("identity_callback")
         if identity is None:
-            print("Warning: identity_callback element not found, add <identity name=identity_callback> in your pipeline where you want the callback to be called.")
+            print(
+                "Warning: identity_callback element not found, add <identity name=identity_callback> in your pipeline where you want the callback to be called."
+            )
         else:
             identity_pad = identity.get_static_pad("src")
-            identity_pad.add_probe(Gst.PadProbeType.BUFFER, self.app_callback, self.user_data)
+            identity_pad.add_probe(
+                Gst.PadProbeType.BUFFER, self.app_callback, self.user_data
+            )
 
         hailo_display = self.pipeline.get_by_name("hailo_display")
         if hailo_display is None:
-            print("Warning: hailo_display element not found, add <fpsdisplaysink name=hailo_display> to your pipeline to support fps display.")
+            print(
+                "Warning: hailo_display element not found, add <fpsdisplaysink name=hailo_display> to your pipeline to support fps display."
+            )
         else:
             xvimagesink = hailo_display.get_by_name("xvimagesink0")
             if xvimagesink is not None:
@@ -226,14 +238,18 @@ class GStreamerApp:
 
         # Start a subprocess to run the display_user_data_frame function
         if self.options_menu.use_frame:
-            display_process = multiprocessing.Process(target=display_user_data_frame, args=(self.user_data,))
+            display_process = multiprocessing.Process(
+                target=display_user_data_frame, args=(self.user_data,)
+            )
             display_process.start()
-            
-            display_edited_process = multiprocessing.Process(target=display_edited_user_data_frame, args=(self.user_data,))
-            display_edited_process.start()
-            
+
+            # display_edited_process = multiprocessing.Process(target=display_edited_user_data_frame, args=(self.user_data,))
+            # display_edited_process.start()
+
         if self.source_type == "rpi":
-            picam_thread = threading.Thread(target=self.picamera_thread, args=(None, self.user_data))
+            picam_thread = threading.Thread(
+                target=self.picamera_thread, args=(None, self.user_data)
+            )
             self.threads.append(picam_thread)
             picam_thread.start()
         # Set pipeline to PLAYING state
@@ -254,7 +270,6 @@ class GStreamerApp:
             display_process.join()
         for t in self.threads:
             t.join()
-    
     def picamera_thread(self, picamera_config=None, user_data=None):
         appsrc = self.pipeline.get_by_name("app_source")
         appsrc.set_property("is-live", True)
@@ -264,69 +279,82 @@ class GStreamerApp:
         with Picamera2() as picam2:
             if picamera_config is None:
                 # Default configuration
-                main = {'size': (1200, 1200), 'format': 'RGB888'}
-                lores = {'size': (self.video_width, self.video_height), 'format': 'RGB888'}
-                controls = {'FrameRate': 30}
-                config = picam2.create_preview_configuration(main=main, lores=lores, controls=controls)
+                main = {"size": (1200, 1200), "format": "RGB888"}
+                lores = {
+                    "size": (self.video_width, self.video_height),
+                    "format": "RGB888",
+                }
+                controls = {"FrameRate": 30}
+                config = picam2.create_preview_configuration(
+                    main=main, lores=lores, controls=controls
+                )
             else:
                 config = picamera_config
-            
+
             # Configure the camera with the created configuration
             picam2.configure(config)
             # Update GStreamer caps based on 'lores' stream
-            lores_stream = config['lores']
-            format_str = 'RGB' if lores_stream['format'] == 'RGB888' else self.video_format
-            width, height = lores_stream['size']
-            print(f"Picamera2 configuration: width={width}, height={height}, format={format_str}")
+            lores_stream = config["lores"]
+            format_str = (
+                "RGB" if lores_stream["format"] == "RGB888" else self.video_format
+            )
+            width, height = lores_stream["size"]
+            print(
+                f"Picamera2 configuration: width={width}, height={height}, format={format_str}"
+            )
             appsrc.set_property(
                 "caps",
                 Gst.Caps.from_string(
                     f"video/x-raw, format={format_str}, width={width}, height={height}, "
                     f"framerate=30/1, pixel-aspect-ratio=1/1"
-                )
+                ),
             )
             picam2.start()
             frame_count = 0
             start_time = time.time()
             print("picamera_process started")
             while True:
-                frame_data = picam2.capture_array('lores')
+                frame_data = picam2.capture_array("lores")
                 # frame_data = np.random.randint(0, 255, (height, width, 3), dtype=np.uint8)
                 if frame_data is None:
                     print("Failed to capture frame.")
                     break
-                
                 frame = cv2.cvtColor(frame_data, cv2.COLOR_BGR2RGB)
                 frame = np.asarray(frame)
                 # Convert framontigue data if necessary
                 if frame_count == 1 or frame_count % 30 == 0:
                     _, img_object = detect_input_board(frame)
-                    edited_frame = img_object['orig']
-                    edited_frame = cv2.resize(edited_frame, (1200,1200))
+                    edited_frame = img_object["orig"]
+                    splited_imgs, corners = obtain_individual_pieces(img_object["orig"])
+                    edited_frame = cv2.resize(edited_frame, (1200, 1200))
                     user_data.set_edited_frame(edited_frame)
-                    splited_imgs, corners = obtain_individual_pieces(img_object['orig'])
-                    splited_imgs = np.concatenate(splited_imgs, axis=0)
-                    splited_imgs = np.resize(
-                        np.concatenate(splited_imgs, axis=0), (64, 1200, 1200, 3)
-                    )
-                    # for detection in corners:
-                    #     ymin, ymax, xmin, xmax = detection
-                    #     width = xmax - xmin
-                    #     height = ymax - ymin
-                    #     frame = cv2.rectangle(frame, (xmin, ymin), (xmax,ymax), (255, 0, 2), 3)
+                    # splited_imgs = np.concatenate(splited_imgs, axis=0)
+                    # splited_imgs = np.resize(
+                    #     np.concatenate(splited_imgs, axis=0), (64, 1200, 1200, 3)
+                    # )
+                    for img in splited_imgs:
+                        # for detection in corners:
+                        #     ymin, ymax, xmin, xmax = detection
+                        #     width = xmax - xmin
+                        #     height = ymax - ymin
+                        #     frame = cv2.rectangle(frame, (xmin, ymin), (xmax,ymax), (255, 0, 2), 3)
+
+                        # Create Gst.Buffer by wrapping the frame data
                         
-                # Create Gst.Buffer by wrapping the frame data
-                buffer = Gst.Buffer.new_wrapped(frame.tobytes())
-                # Set buffer PTS and duration
-                buffer_duration = Gst.util_uint64_scale_int(1, Gst.SECOND, 30)
-                buffer.pts = frame_count * buffer_duration
-                buffer.duration = buffer_duration
-                # Push the buffer to appsrc
-                ret = appsrc.emit('push-buffer', buffer)
-                if ret != Gst.FlowReturn.OK:
-                    print("Failed to push buffer:", ret)
-                    break
+                        edited = np.resize(np.squeeze(img), (1200, 1200,3))
+                        import ipdb; ipdb.set_trace()
+                        buffer = Gst.Buffer.new_wrapped(frame.tobytes())
+                        # Set buffer PTS and duration
+                        buffer_duration = Gst.util_uint64_scale_int(1, Gst.SECOND, 30)
+                        buffer.pts = frame_count * buffer_duration
+                        buffer.duration = buffer_duration
+                        # Push the buffer to appsrc
+                        ret = appsrc.emit("push-buffer", buffer)
+                        if ret != Gst.FlowReturn.OK:
+                            print("Failed to push buffer:", ret)
+                        break
                 frame_count += 1
+
 
 def disable_qos(pipeline):
     """
@@ -349,21 +377,22 @@ def disable_qos(pipeline):
             break
 
         # Check if the element has the 'qos' property
-        if 'qos' in GObject.list_properties(element):
+        if "qos" in GObject.list_properties(element):
             # Set the 'qos' property to False
-            element.set_property('qos', False)
+            element.set_property("qos", False)
             print(f"Set qos to False for {element.get_name()}")
+
 
 # This function is used to display the user data frame
 def display_user_data_frame(user_data: app_callback_class):
     while user_data.running:
         frame = user_data.get_frame()
-        # frame = cv2.resize(frame, (600,600))
         if frame is not None:
             cv2.imshow("User Frame", frame)
         cv2.waitKey(1)
     cv2.destroyAllWindows()
-    
+
+
 def display_edited_user_data_frame(user_data: app_callback_class):
     while user_data.running:
         frame = user_data.get_edited_frame()
