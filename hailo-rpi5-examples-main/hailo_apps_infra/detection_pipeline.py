@@ -9,11 +9,11 @@ import setproctitle
 import cv2
 import time
 import hailo
-from hailo_apps_infra.hailo_rpi_common import (
+from hailo_rpi_common import (
     get_default_parser,
     detect_hailo_arch,
 )
-from hailo_apps_infra.gstreamer_helper_pipelines import(
+from gstreamer_helper_pipelines import(
     QUEUE,
     SOURCE_PIPELINE,
     INFERENCE_PIPELINE,
@@ -22,7 +22,7 @@ from hailo_apps_infra.gstreamer_helper_pipelines import(
     USER_CALLBACK_PIPELINE,
     DISPLAY_PIPELINE,
 )
-from hailo_apps_infra.gstreamer_app import (
+from gstreamer_app import (
     GStreamerApp,
     app_callback_class,
     dummy_callback
@@ -106,7 +106,7 @@ class GStreamerDetectionApp(GStreamerApp):
         display_pipeline = DISPLAY_PIPELINE(video_sink=self.video_sink, sync=self.sync, show_fps=self.show_fps)
         pipeline_string = (
             f'{source_pipeline} ! '
-            f'{detection_pipeline_wrapper} ! '
+            # f'{detection_pipeline_wrapper} ! '
             f'{tracker_pipeline} ! '
             f'{user_callback_pipeline} ! '
             f'{display_pipeline}'

@@ -1,0 +1,28 @@
+[2024-12-25 15:09:20.922] [27901] [HailoRT] [info] [device.cpp:51] [Device] OS Version: Linux 6.6.62+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.62-1+rpt1 (2024-11-25) aarch64
+[2024-12-25 15:09:20.924] [27901] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:09:20.925] [27901] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:18:43.125] [29730] [HailoRT] [info] [device.cpp:51] [Device] OS Version: Linux 6.6.62+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.62-1+rpt1 (2024-11-25) aarch64
+[2024-12-25 15:18:43.129] [29730] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:18:43.131] [29730] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:18:43.276] [29693] [HailoRT] [info] [device.cpp:51] [Device] OS Version: Linux 6.6.62+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.62-1+rpt1 (2024-11-25) aarch64
+[2024-12-25 15:18:43.278] [29693] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:18:43.278] [29693] [HailoRT] [info] [vdevice.cpp:655] [create] VDevice Infos: 0000:01:00.0
+[2024-12-25 15:18:43.280] [29693] [HailoRT] [error] [file_utils.cpp:40] [read_binary_file] CHECK failed - Error opening file /home/zahi/new/RoboChess/hailo-rpi5-examples-main/hailo_apps_infra/../resources/yolov8m.hef
+[2024-12-25 15:18:43.282] [29693] [HailoRT] [error] [hef.cpp:484] [parse_hef_file] CHECK_SUCCESS failed with status=HAILO_OPEN_FILE_FAILURE(13)
+[2024-12-25 15:18:43.282] [29693] [HailoRT] [error] [hef.cpp:921] [Impl] Failed parsing HEF file
+[2024-12-25 15:18:43.282] [29693] [HailoRT] [error] [hef.cpp:307] [create] Failed creating HEF
+[2024-12-25 15:18:43.282] [29693] [HailoRT] [error] [hef.cpp:163] [create] CHECK_SUCCESS failed with status=HAILO_OPEN_FILE_FAILURE(13)
+[2024-12-25 15:18:43.282] [29693] [HailoRT] [error] [infer_model.cpp:206] [create] CHECK_SUCCESS failed with status=HAILO_OPEN_FILE_FAILURE(13)
+[2024-12-25 15:18:43.283] [29693] [HailoRT] [error] [vdevice.cpp:771] [create_infer_model] CHECK_SUCCESS failed with status=HAILO_OPEN_FILE_FAILURE(13)
+[2024-12-25 15:19:13.459] [29858] [HailoRT] [info] [device.cpp:51] [Device] OS Version: Linux 6.6.62+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.62-1+rpt1 (2024-11-25) aarch64
+[2024-12-25 15:19:13.461] [29858] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:19:13.462] [29858] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:20:17.046] [30190] [HailoRT] [info] [device.cpp:51] [Device] OS Version: Linux 6.6.62+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.62-1+rpt1 (2024-11-25) aarch64
+[2024-12-25 15:20:17.062] [30190] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:20:17.070] [30190] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:21:55.063] [30485] [HailoRT] [info] [device.cpp:51] [Device] OS Version: Linux 6.6.62+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.62-1+rpt1 (2024-11-25) aarch64
+[2024-12-25 15:21:55.065] [30485] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:21:55.066] [30485] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:22:24.378] [30619] [HailoRT] [info] [device.cpp:51] [Device] OS Version: Linux 6.6.62+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.62-1+rpt1 (2024-11-25) aarch64
+[2024-12-25 15:22:24.380] [30619] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
+[2024-12-25 15:22:24.381] [30619] [HailoRT] [info] [control.cpp:109] [control__parse_identify_results] firmware_version is: 4.19.0
