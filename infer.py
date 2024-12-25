@@ -55,7 +55,7 @@ def main():
             # Check if the frame was successfully captured
             if ret:
                 # Display the captured frame (image) continuously
-                cv2.imshow("Captured Image", cv2.resize(frame, (720, 640)))
+                cv2.imshow("Captured Image", cv2.resize(frame, (1024,768)))
 
                 # Wait for keypress
                 key = cv2.waitKey(1) & 0xFF
@@ -72,7 +72,7 @@ def main():
                     #pieces64 -= 1
                     board_result = robochess.infer(pieces64)  # 64 on 13
                     # Display the cropped board
-                    cv2.imshow("Cropped Board", cv2.resize(cropped_board, (720, 640)))
+                    cv2.imshow("Cropped Board", cv2.resize(cropped_board, (1024,768)))
 
             else:
                 print("Error: Could not read frame.")
