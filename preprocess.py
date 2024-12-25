@@ -13,7 +13,7 @@ def preprocess(numpy_frame):
     _, cropped_board = detect_input_board(numpy_frame)
     pieces, corners = obtain_individual_pieces(cropped_board["orig"])
     pieces = np.concatenate(pieces, axis=0)
-    return pieces
+    return cropped_board["orig"], pieces
 
 def main():
     img_path = "LiveChess2Fen/data/predictions/TestImages/FullDetection/test1.jpg"
