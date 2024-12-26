@@ -5,6 +5,7 @@ import cairosvg
 from IPython.display import SVG
 import matplotlib.pyplot as plt
 from PIL import Image
+from voicer import play_sound
 
 def unstocfishy_fen(stockfishy_fen):
     return stockfishy_fen.split()[0]
@@ -27,11 +28,13 @@ def calculate_next_step(current_fen="rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQ
         start_square = chess.parse_square(best_move[:2])  # E.g. "e2" -> chess.E2
         end_square = chess.parse_square(best_move[2:])    # E.g. "e4" -> chess.E4
 
+        #play_sound(f"next move is black from {best_move[:2]} to {best_move[2:]}")
+
         # Create the SVG content for the current board state, with the arrow indicating the next move
         svg_content = chess.svg.board(
             board,
             arrows=[chess.svg.Arrow(start_square, end_square, color="#0000cccc")],  # Arrow from start to end square
-            size=350
+            size=250
         )
 
         # Convert the SVG to PNG using cairosvg
@@ -52,6 +55,7 @@ def calculate_next_step(current_fen="rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQ
         updated_fen = stockfish.get_fen_position()
         print("Updated board:")
         print(stockfish.get_board_visual())
+        #play_sound(f"White turn to play")
         return True, updated_fen
     else:
         return False, updated_fen

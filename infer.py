@@ -8,6 +8,7 @@ from next_step_calculator import calculate_next_step
 import subprocess
 import time
 import matplotlib.pyplot as plt
+from voicer import play_sound
 
 
 HEF_XCEPTION_PATH = "hefs/Xception_last.hef"
@@ -44,9 +45,9 @@ def stockfishy_fen(fen, turn='b', castling_rights='KQkq', en_passant='-', halfmo
 def unstocfishy_fen(stockfishy_fen):
     return stockfishy_fen.split()[0]
 
-RECORD_IMAGE = True
+RECORD_IMAGE = False
 USE_IMAGE = False
-LED = False
+LED = True
 
 fig, ax = plt.subplots()
 
@@ -119,6 +120,8 @@ def main():
                     if should_recapture:
                         print("Recapturing")
                         continue
+
+                    #play_sound(f"Black turn to play")
 
                     stockfish_fen = stockfishy_fen(fen, turn='b', halfmove=str(halfmove), fullmove=str(fullmove))
                     #halfmove = halfmove + 1 % 2
