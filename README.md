@@ -2,6 +2,9 @@
 
 An open-source, innovative chess-playing robotic system that combines cutting-edge AI, robotics, and sleek design. ChessMate uses the Hailo8 AI processor, Raspberry Pi 5, a robotic arm, and a camera to fully automate the game of chess. This project is designed to be fun, engaging, and easy to replicate for any AI or chess enthusiast.
 
+The hackathon journey is presented in the following link:
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YMOs-p2F7OY/0.jpg)](https://www.youtube.com/watch?v=YMOs-p2F7OY)
+
 ---
 
 ## The Build
