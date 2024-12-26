@@ -54,10 +54,6 @@ The robotic arm executes the moves calculated by Stockfish, playing its turn wit
   - Use VS Code with PlatformIO.
   - Clone the sub-repository [here](<link>) and upload the firmware to your ESP32 board. Remember to update the Wi-Fi SSID and password in the code.
 
-### RPi + Hailo8 + Camera:
-- **Setup Guide:**
-  - *(Details to be added)*
-
 ---
 
 ## Things We Would Do Differently
