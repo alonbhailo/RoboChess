@@ -7,6 +7,7 @@ from postprocess import prop2fen
 from next_step_calculator import calculate_next_step
 import subprocess
 import time
+import matplotlib.pyplot as plt
 
 
 HEF_XCEPTION_PATH = "hefs/Xception_last.hef"
@@ -46,6 +47,8 @@ def unstocfishy_fen(stockfishy_fen):
 RECORD_IMAGE = True
 USE_IMAGE = False
 LED = False
+
+fig, ax = plt.subplots()
 
 def main():
     with VDevice() as target:
@@ -99,32 +102,28 @@ def main():
                     #pieces64 -= 1
                     board_result = robochess.infer(pieces64)  # 64 on 13
 
-                    fen = prop2fen(board_result['model/fc2'], previous_fen=previous_fen)
+                    fen = prop2fen(board_result['model/fc2'], previous_fen=previous_fen, ax=ax)
                     
-                    print("BLA before")
                     should_recapture = False
                     while True:
                         key2 = cv2.waitKey(0) & 0xFF
                         #if key2 == ord(' '):  # If spacebar is pressed, continue
                         #    pass
                         if key2 == ord('r'):  # If 'r' is pressed, reset the loop
-                            print("BLA")
                             should_recapture = True
                             break
                         elif key2 == ord(' '):
                             print("Valid Capture")
                             break
-                        #print("BLA2 {}".join(key2))
 
                     if should_recapture:
                         print("Recapturing")
                         continue
-                    print("BLA after")
 
                     stockfish_fen = stockfishy_fen(fen, turn='b', halfmove=str(halfmove), fullmove=str(fullmove))
                     #halfmove = halfmove + 1 % 2
                     fullmove = fullmove + 1 
-                    next_move_valid, updated_fen = calculate_next_step(stockfish_fen)
+                    next_move_valid, updated_fen = calculate_next_step(stockfish_fen, ax)
                     previous_fen = unstocfishy_fen(updated_fen)
                     if LED:
                         subprocess.run(purple_command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
